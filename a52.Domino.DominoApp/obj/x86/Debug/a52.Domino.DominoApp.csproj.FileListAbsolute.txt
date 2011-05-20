@@ -1,0 +1,7 @@
+c:\documents and settings\abnel lluberes\my documents\visual studio 2010\Projects\a52.Domino\a52.Domino.DominoApp\bin\Debug\a52.Domino.DominoApp.exe
+c:\documents and settings\abnel lluberes\my documents\visual studio 2010\Projects\a52.Domino\a52.Domino.DominoApp\bin\Debug\a52.Domino.DominoApp.pdb
+c:\documents and settings\abnel lluberes\my documents\visual studio 2010\Projects\a52.Domino\a52.Domino.DominoApp\bin\Debug\a52.Domino.Domain.dll
+c:\documents and settings\abnel lluberes\my documents\visual studio 2010\Projects\a52.Domino\a52.Domino.DominoApp\bin\Debug\a52.Domino.Domain.pdb
+c:\documents and settings\abnel lluberes\my documents\visual studio 2010\Projects\a52.Domino\a52.Domino.DominoApp\obj\x86\Debug\ResolveAssemblyReference.cache
+c:\documents and settings\abnel lluberes\my documents\visual studio 2010\Projects\a52.Domino\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.exe
+c:\documents and settings\abnel lluberes\my documents\visual studio 2010\Projects\a52.Domino\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.pdb
