@@ -12,3 +12,10 @@ D:\My Work\a52\a52.Dominos\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.Dom
 D:\My Work\a52\a52.Dominos\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.Domain.dll
 D:\My Work\a52\a52.Dominos\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.Domain.pdb
 D:\My Work\a52\a52.Dominos\Dominos\a52.Domino.DominoApp\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.exe
+D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.pdb
+D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.DominoApp.exe
+D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.DominoApp.pdb
+D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.Domain.dll
+D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.Domain.pdb
+D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.csprojResolveAssemblyReference.cache

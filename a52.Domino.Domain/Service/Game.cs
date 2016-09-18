@@ -32,6 +32,9 @@ namespace a52.Domino.Domain.Service
 
         public void Deal()
         {
+            this.Board = new Model.Board();
+            
+
             foreach (var tab in tabs) tab.IsAssigned = false;
             var q = from p in tabs where p.IsAssigned == false orderby Guid.NewGuid() select p;
             int iCount = 0;
@@ -49,9 +52,7 @@ namespace a52.Domino.Domain.Service
             }
 
         }
-
-
-
+        
 
 
 

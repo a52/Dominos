@@ -8,3 +8,8 @@ D:\My Work\a52\a52.Dominos\Dominos\a52.Domino.Domain\bin\Debug\a52.Domino.Domain
 D:\My Work\a52\a52.Dominos\Dominos\a52.Domino.Domain\obj\Debug\ResolveAssemblyReference.cache
 D:\My Work\a52\a52.Dominos\Dominos\a52.Domino.Domain\obj\Debug\a52.Domino.Domain.dll
 D:\My Work\a52\a52.Dominos\Dominos\a52.Domino.Domain\obj\Debug\a52.Domino.Domain.pdb
+D:\Dev\Dominos\Dominos\a52.Domino.Domain\bin\Debug\a52.Domino.Domain.dll
+D:\Dev\Dominos\Dominos\a52.Domino.Domain\bin\Debug\a52.Domino.Domain.pdb
+D:\Dev\Dominos\Dominos\a52.Domino.Domain\obj\Debug\a52.Domino.Domain.csprojResolveAssemblyReference.cache
+D:\Dev\Dominos\Dominos\a52.Domino.Domain\obj\Debug\a52.Domino.Domain.dll
+D:\Dev\Dominos\Dominos\a52.Domino.Domain\obj\Debug\a52.Domino.Domain.pdb
