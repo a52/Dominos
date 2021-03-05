@@ -19,3 +19,12 @@ D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.DominoApp.pdb
 D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.Domain.dll
 D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.Domain.pdb
 D:\Dev\Dominos\Dominos\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.csprojResolveAssemblyReference.cache
+E:\Workspace\alluberes.domino\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.DominoApp.exe
+E:\Workspace\alluberes.domino\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.DominoApp.pdb
+E:\Workspace\alluberes.domino\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.Domain.dll
+E:\Workspace\alluberes.domino\Dominos\a52.Domino.DominoApp\bin\Debug\a52.Domino.Domain.pdb
+E:\Workspace\alluberes.domino\Dominos\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.csprojAssemblyReference.cache
+E:\Workspace\alluberes.domino\Dominos\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.csproj.CoreCompileInputs.cache
+E:\Workspace\alluberes.domino\Dominos\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.csproj.CopyComplete
+E:\Workspace\alluberes.domino\Dominos\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.exe
+E:\Workspace\alluberes.domino\Dominos\a52.Domino.DominoApp\obj\x86\Debug\a52.Domino.DominoApp.pdb
