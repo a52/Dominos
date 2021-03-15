@@ -38,7 +38,7 @@ namespace a52.Domino.DominoApp
                 ShowMenu();
 
                 cki = Console.ReadKey();
-                Console.Clear();
+                // Console.Clear();
 
                 switch (cki.Key)
                 {
@@ -55,10 +55,18 @@ namespace a52.Domino.DominoApp
                         break;
 
 
-                    case ConsoleKey.F4:
+                    case ConsoleKey.F3:
                         player = SelectPlayer();
                         break;
 
+                        
+                    case ConsoleKey.F4: /// do a move
+                        DoAMove(player);
+                        break;
+
+                    case ConsoleKey.F12:
+                        testPlayers(player);
+                        break;
 
                     default:
                         break;
@@ -66,7 +74,6 @@ namespace a52.Domino.DominoApp
 
             } while (cki.Key != ConsoleKey.Escape);
         }
-
 
         public void DibujarTablero()
         {
@@ -82,29 +89,30 @@ namespace a52.Domino.DominoApp
         {
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.SetCursorPosition(0, 8);
+
+            Console.SetCursorPosition(0, Console.CursorTop + 1);
             Console.WriteLine("-".PadRight(80, '-'));
-            Console.SetCursorPosition(0, 9);
+            Console.SetCursorPosition(0, Console.CursorTop + 1);
             Console.WriteLine("{0}{1}{0}", "".PadLeft(40 - (player.PlayerName.Length / 2)), player.PlayerName);
-            Console.SetCursorPosition(0, 10);
+            Console.SetCursorPosition(0, Console.CursorTop + 1);
             Console.WriteLine("-".PadRight(80, '-'));
 
-
+            int currentTop = Console.CursorTop;
             int icount = 0;
             foreach (var tab in player.Tabs)
             {
 
-                this.DisplayFicha(tab, icount * 7, 11);
+                this.DisplayFicha(tab, icount * 7, currentTop);
 
-                Console.SetCursorPosition(icount * 7, 15);
+                Console.SetCursorPosition(icount * 7, currentTop + 5);
                 if (tab.IsOnBoard)
                     Console.Write("  *  ");
-
+                else Console.WriteLine($" [{icount}]  ");
 
                 icount++;
             }
 
-            Console.SetCursorPosition(0, 26);
+            Console.SetCursorPosition(0, currentTop + 5);
             Console.WriteLine("-".PadRight(80, '-'));
 
         }
@@ -117,24 +125,45 @@ namespace a52.Domino.DominoApp
             Console.SetCursorPosition(left, top + 1);
             Console.Write("| {0} |", tab.Up_Value);
             Console.SetCursorPosition(left, top + 2);
-            Console.Write("| {0} |", tab.Down_Value);
+            Console.Write("|---|");
             Console.SetCursorPosition(left, top + 3);
+            Console.Write("| {0} |", tab.Down_Value);
+            Console.SetCursorPosition(left, top + 4);
             Console.Write("|___|");
+
 
         }
 
         private void ShowMenu(int opt = 0)
         {
-            Console.SetCursorPosition(0, 0);
+            Console.SetCursorPosition(0, Console.CursorTop + 1);
             Console.WriteLine("-".PadRight(80, '-'));
-
             Console.WriteLine(" -> F1 - Listar Mis fichas");
             Console.WriteLine(" -> F2 - Ver Tablero");
             Console.WriteLine(" -> F3 - Lista de jugadas");
+            Console.WriteLine(" -> F4 - Jugar ");
             Console.WriteLine(" -> Esc - Salir");
             Console.WriteLine("-".PadRight(80, '-'));
 
         }
+
+        #region Opciones
+
+        public void DoAMove(Domain.Model.Player player)
+        {
+            /// Display tabs
+            this.DibujarTablero();
+            this.DibujarMisFichas(player);
+
+            /// Display options to choose
+            
+            
+            /// Chose one
+            /// Play
+
+        }
+
+        #endregion
 
 
         private Domain.Model.Player SelectPlayer()
@@ -164,6 +193,23 @@ namespace a52.Domino.DominoApp
 
         }
 
+        #region test functions
+
+        private void testPlayers(Domain.Model.Player player)
+        {
+            /// Show users
+            Console.WriteLine(player.PlayerName);
+
+
+            /// Show menu
+            /// Mostrar tablero
+            /// Probar usuario
+            Console.WriteLine("is the right Player: {0}", game.IsRightPlayer(player));
+
+
+        }
+
+        #endregion
 
     }
 }

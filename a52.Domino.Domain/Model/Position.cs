@@ -9,6 +9,7 @@ namespace a52.Domino.Domain.Model
     {
         public int x { get; set; }
         public int y { get; set; }
+        public int Index { get; set; }
 
         public Tab item { get; set; }
     }

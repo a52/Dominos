@@ -10,6 +10,8 @@ namespace a52.Domino.Domain.Service
 
         public List<Model.Player> Players { get; set; }
 
+        private Model.Player currentPlayer;
+
         List<Model.Tab> tabs;
         public Model.Board Board { get; set; }
 
@@ -33,7 +35,7 @@ namespace a52.Domino.Domain.Service
         public void Deal()
         {
             this.Board = new Model.Board();
-            
+
 
             foreach (var tab in tabs) tab.IsAssigned = false;
             var q = from p in tabs where p.IsAssigned == false orderby Guid.NewGuid() select p;
@@ -51,8 +53,54 @@ namespace a52.Domino.Domain.Service
 
             }
 
+            currentPlayer = Players.FirstOrDefault();
+
         }
-        
+
+        public bool PlayTab(Model.Player player, Model.Tab tab, Model.Direction direction = Model.Direction.Auto)
+        {
+            var result = false;
+
+            if (!tab.IsOnBoard)
+                /// validar si es el jugar correcto
+                if (this.IsRightPlayer(player))
+                {
+                    /// validar si la ficha pertenece al jugador
+                    if (player.Tabs.Contains(tab))
+                    {
+                        this.Board.AddTab(tab, direction);
+                        /// validar si la ficha tiene los valores de lugar
+                        tab.IsOnBoard = true;
+                    }
+                    else System.Diagnostics.Debug.WriteLine($"The tab {tab.ToString()} is not from the player {player.PlayerName}");
+                }
+
+
+            return result;
+        }
+
+
+
+
+        public bool IsRightPlayer(Model.Player player)
+        {
+            var result = false;
+            /// Validar si el board tiene fichas
+            if (this.Board.Items.Count.Equals(0))
+            {
+                foreach (var item in player.Tabs)
+                    if (item.Up_Value.Equals(6))
+                        if (item.Down_Value.Equals(6))
+                        {
+                            result = true;
+                            break;
+                        }
+            }
+            else
+                result = currentPlayer == player;
+            return result;
+        }
+
 
 
 

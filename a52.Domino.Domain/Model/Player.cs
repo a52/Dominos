@@ -20,5 +20,11 @@ namespace a52.Domino.Domain.Model
         public bool IsActive { get; set; }
 
         public List<Tab> Tabs { get; set; }
+
+        public override string ToString()
+        {
+            var result = this.PlayerName;
+            return result;
+        }
     }
 }
