@@ -12,15 +12,19 @@ namespace a52.Domino.Domain.Service
 
         private Model.Player currentPlayer;
 
-        List<Model.Tab> tabs;
+        List<Model.Token> tabs;
         public Model.Board Board { get; set; }
 
+        /// <summary>
+        /// Start the game
+        /// The token are generated 
+        /// </summary>
         public Game()
         {
             /// Generar Fichas
-            tabs = new List<Model.Tab>();
+            tabs = new List<Model.Token>();
             for (int up = 0; up <= 6; up++) for (int down = 0; down <= 6; down++)
-                    if (up <= down) tabs.Add(new Model.Tab() { Up_Value = up, Down_Value = down, IsOnBoard = false, Position = 0 });
+                    if (up <= down) tabs.Add(new Model.Token() { Up_Value = up, Down_Value = down, IsOnBoard = false });
 
             /// Creacion de tablero
             Board = new Model.Board();
@@ -32,6 +36,9 @@ namespace a52.Domino.Domain.Service
                 this.Players.Add(new Model.Player() { PlayerName = string.Format("Jugador {0}", i), IsActive = true, IsMachine = true });
         }
 
+        /// <summary>
+        /// Distributes the token between the four players
+        /// </summary>
         public void Deal()
         {
             this.Board = new Model.Board();
@@ -43,7 +50,7 @@ namespace a52.Domino.Domain.Service
             /// Asignar fichas al primer jugador
             foreach (var player in this.Players)
             {
-                player.Tabs = new List<Model.Tab>();
+                player.Tabs = new List<Model.Token>();
                 foreach (var tab in q.Take(7))
                 {
                     player.Tabs.Add(tab);
@@ -57,7 +64,7 @@ namespace a52.Domino.Domain.Service
 
         }
 
-        public bool PlayTab(Model.Player player, Model.Tab tab, Model.Direction direction = Model.Direction.Auto)
+        public bool PlayTab(Model.Player player, Model.Token tab, Model.Direction direction = Model.Direction.Auto)
         {
             var result = false;
 
@@ -78,8 +85,6 @@ namespace a52.Domino.Domain.Service
 
             return result;
         }
-
-
 
 
         public bool IsRightPlayer(Model.Player player)

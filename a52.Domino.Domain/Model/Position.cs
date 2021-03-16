@@ -11,6 +11,6 @@ namespace a52.Domino.Domain.Model
         public int y { get; set; }
         public int Index { get; set; }
 
-        public Tab item { get; set; }
+        public Token item { get; set; }
     }
 }

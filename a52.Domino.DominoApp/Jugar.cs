@@ -117,7 +117,7 @@ namespace a52.Domino.DominoApp
 
         }
 
-        private void DisplayFicha(Domain.Model.Tab tab, int left, int top)
+        private void DisplayFicha(Domain.Model.Token tab, int left, int top)
         {
 
             Console.SetCursorPosition(left, top);

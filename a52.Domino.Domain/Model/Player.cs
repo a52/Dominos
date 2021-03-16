@@ -10,16 +10,34 @@ namespace a52.Domino.Domain.Model
 
         public Player()
         {
-            this.Tabs = new List<Tab>();
+            this.Tabs = new List<Token>();
         }
 
-        public int OrderBy { get; set; }
+        /// <summary>
+        /// - Index: Order of in the game
+        /// </summary>
+        public int Index { get; set; }
+
+        /// <summary>
+        /// - PlayerName: Name of the player
+        /// </summary>
         public string PlayerName { get; set; }
 
+        /// <summary>
+        /// - IsMachine: Indicate if is a human or the computer that will play
+        /// </summary>
         public bool IsMachine { get; set; }
         public bool IsActive { get; set; }
 
-        public List<Tab> Tabs { get; set; }
+        /// <summary>
+        /// - Score: the point earned by the player
+        /// </summary>
+        public int Score { get; set; }
+
+        /// <summary>
+        /// - Tabs[]: list of tabs that is in the her hand  
+        /// </summary>
+        public List<Token> Tabs { get; set; }
 
         public override string ToString()
         {
