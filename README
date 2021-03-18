@@ -40,3 +40,13 @@ Game
 	
 	+ Deal(): iniciate a game
 	+ Play(player, tab, direction): make a movement in the board
+
+
+
+
+Console application
+	- F1 - Start Game: deal and clean board
+	- F2 - Choose Player: select player to make movement
+	- F3 - Show Board: show the state of the board. Movements, score, and current player
+	- F4 - Show player's tokens: show all the tokens of the user
+	- F5 - Make Movement: take a token of the current user and put it in the board

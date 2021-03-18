@@ -5,14 +5,32 @@ using System.Text;
 
 namespace a52.Domino.Domain.Service
 {
+    /*
+     * 
+Game
+	- Board: the board where is playing
+	- Player[]: array of four player
+	
+	+ Deal(): iniciate a game
+	+ Play(player, tab, direction): make a movement in the board
+
+     * */
     public class Game
     {
 
+        /// <summary>
+        /// - Player[]: array of four player
+        /// </summary>
         public List<Model.Player> Players { get; set; }
 
-        private Model.Player currentPlayer;
+        public Model.Player currentPlayer { get; private set; }
+
 
         List<Model.Token> tabs;
+
+        /// <summary>
+        /// - Board: the board where is playing
+        /// </summary>  
         public Model.Board Board { get; set; }
 
         /// <summary>
@@ -33,11 +51,14 @@ namespace a52.Domino.Domain.Service
             /// Creacion de jugadores
             this.Players = new List<Model.Player>();
             for (int i = 1; i < 5; i++)
-                this.Players.Add(new Model.Player() { PlayerName = string.Format("Jugador {0}", i), IsActive = true, IsMachine = true });
+                this.Players.Add(new Model.Player() { PlayerName = string.Format("Jugador {0}", i), IsActive = true, IsMachine = true, Index = i });
         }
+
+
 
         /// <summary>
         /// Distributes the token between the four players
+        /// + Deal(): iniciate a game
         /// </summary>
         public void Deal()
         {
@@ -64,34 +85,50 @@ namespace a52.Domino.Domain.Service
 
         }
 
-        public bool PlayTab(Model.Player player, Model.Token tab, Model.Direction direction = Model.Direction.Auto)
+
+        /// <summary>
+        /// + Play(player, tab, direction): make a movement in the board
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="token"></param>
+        /// <param name="direction"></param>
+        public void Play(Model.Player player, Model.Token token, Model.Direction direction = Model.Direction.Auto)
         {
-            var result = false;
+            /// validate token
+            if (token.IsOnBoard)
+                throw new Exception("the token had been played");
+            /// validate player
+            if (player != this.currentPlayer)
+                throw new Exception($"It isn't the turn of {player.PlayerName}. The player who have to play is {this.currentPlayer.PlayerName}.");
+            /// validate token in the player
+            if (!player.Tabs.Contains(token))
+                throw new Exception($"The token {token} isn't for the player {player}. Please review");
 
-            if (!tab.IsOnBoard)
-                /// validar si es el jugar correcto
-                if (this.IsRightPlayer(player))
-                {
-                    /// validar si la ficha pertenece al jugador
-                    if (player.Tabs.Contains(tab))
-                    {
-                        this.Board.AddTab(tab, direction);
-                        /// validar si la ficha tiene los valores de lugar
-                        tab.IsOnBoard = true;
-                    }
-                    else System.Diagnostics.Debug.WriteLine($"The tab {tab.ToString()} is not from the player {player.PlayerName}");
-                }
+            /// create movement
+            var m = new Model.Movement();
+            m.CurrentDirection = direction;
+            m.CurrentPlayer = player;
+            m.CurrentToken = token;
+            m.Date = DateTime.Now;
+            m.Index = this.Board.MoveCount + 1;
 
+            /// add movement
+            Board.Move(m);
 
-            return result;
+            /// Assign the next player
+            this.currentPlayer = this.GetNextPlayer();
         }
 
-
+        /// <summary>
+        /// validate is the player is current player
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public bool IsRightPlayer(Model.Player player)
         {
             var result = false;
             /// Validar si el board tiene fichas
-            if (this.Board.Items.Count.Equals(0))
+            if (this.Board.MoveCount.Equals(0))
             {
                 foreach (var item in player.Tabs)
                     if (item.Up_Value.Equals(6))
@@ -106,9 +143,19 @@ namespace a52.Domino.Domain.Service
             return result;
         }
 
+        /// <summary>
+        ///  Identify the next player
+        /// </summary>
+        /// <returns></returns>
+        private Model.Player GetNextPlayer()
+        {
+            Model.Player result = null;
+            int nextIndex = 0;
+            nextIndex = 4 - this.currentPlayer.Index;
+            result = this.Players.Where(x => x.Index.Equals(nextIndex)).FirstOrDefault();
 
-
-
+            return result;
+        }
 
 
 

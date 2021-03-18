@@ -78,9 +78,9 @@ namespace a52.Domino.DominoApp
         public void DibujarTablero()
         {
             int icount = 0;
-            foreach (var tab in game.Board.Tabs)
+            foreach (var tab in game.Board.Movements)
             {
-                this.DisplayFicha(tab, icount * 7, 11);
+                this.DisplayFicha(tab.CurrentToken, icount * 7, 11);
                 icount++;
             }
         }
