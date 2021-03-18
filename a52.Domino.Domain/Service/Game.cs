@@ -50,10 +50,9 @@ Game
 
             /// Creacion de jugadores
             this.Players = new List<Model.Player>();
-            for (int i = 1; i < 5; i++)
-                this.Players.Add(new Model.Player() { PlayerName = string.Format("Jugador {0}", i), IsActive = true, IsMachine = true, Index = i });
+            for (int i = 0; i < 4; i++)
+                this.Players.Add(new Model.Player() { PlayerName = string.Format("Jugador {0}", i + 1), IsActive = true, IsMachine = true, Index = i });
         }
-
 
 
         /// <summary>
@@ -71,10 +70,10 @@ Game
             /// Asignar fichas al primer jugador
             foreach (var player in this.Players)
             {
-                player.Tabs = new List<Model.Token>();
+                player.Tokens = new List<Model.Token>();
                 foreach (var tab in q.Take(7))
                 {
-                    player.Tabs.Add(tab);
+                    player.Tokens.Add(tab);
                     tab.IsAssigned = true;
                 }
                 iCount++;
@@ -84,7 +83,6 @@ Game
             currentPlayer = Players.FirstOrDefault();
 
         }
-
 
         /// <summary>
         /// + Play(player, tab, direction): make a movement in the board
@@ -97,14 +95,30 @@ Game
             /// validate token
             if (token.IsOnBoard)
                 throw new Exception("the token had been played");
+            if (!Board.MoveCount.Equals(0))
+                if ((!token.Down_Value.Equals(Board.DownValue)) &&
+                    (!token.Up_Value.Equals(Board.DownValue)) &&
+                    (!token.Down_Value.Equals(Board.UpValue)) &&
+                    (!token.Up_Value.Equals(Board.UpValue)))
+                    throw new Exception($"the choosen token =>{token}<= do not match with the board values =>{Board.UpValue}:{Board.DownValue}<= ");
+
             /// validate player
             if (player != this.currentPlayer)
                 throw new Exception($"It isn't the turn of {player.PlayerName}. The player who have to play is {this.currentPlayer.PlayerName}.");
+
             /// validate token in the player
-            if (!player.Tabs.Contains(token))
+            if (!player.Tokens.Contains(token))
                 throw new Exception($"The token {token} isn't for the player {player}. Please review");
 
             /// create movement
+
+            if (direction == Model.Direction.Auto)
+            {
+                if (token.Up_Value.Equals(Board.UpValue) || token.Down_Value.Equals(Board.UpValue))
+                    direction = Model.Direction.Up;
+                else direction = Model.Direction.Down;
+            }
+
             var m = new Model.Movement();
             m.CurrentDirection = direction;
             m.CurrentPlayer = player;
@@ -115,8 +129,28 @@ Game
             /// add movement
             Board.Move(m);
 
+            token.IsOnBoard = true;
+
             /// Assign the next player
             this.currentPlayer = this.GetNextPlayer();
+        }
+
+        public void SetTheNextPlayer()
+        {
+            this.currentPlayer = this.GetNextPlayer();
+        }
+
+        public bool TokenCanBePlayed(Model.Token token)
+        {
+            var result = false;
+
+            if (!token.IsOnBoard)
+                if ((token.Down_Value.Equals(Board.DownValue)) ||
+                    (token.Up_Value.Equals(Board.DownValue)) ||
+                    (token.Down_Value.Equals(Board.UpValue)) ||
+                    (token.Up_Value.Equals(Board.UpValue)))
+                    result = true;
+            return result;
         }
 
         /// <summary>
@@ -130,7 +164,7 @@ Game
             /// Validar si el board tiene fichas
             if (this.Board.MoveCount.Equals(0))
             {
-                foreach (var item in player.Tabs)
+                foreach (var item in player.Tokens)
                     if (item.Up_Value.Equals(6))
                         if (item.Down_Value.Equals(6))
                         {
@@ -150,9 +184,12 @@ Game
         private Model.Player GetNextPlayer()
         {
             Model.Player result = null;
-            int nextIndex = 0;
-            nextIndex = 4 - this.currentPlayer.Index;
-            result = this.Players.Where(x => x.Index.Equals(nextIndex)).FirstOrDefault();
+            int index = this.currentPlayer.Index;
+            if (index < 3)
+                index++;
+            else index = 0;
+
+            result = this.Players.Where(x => x.Index.Equals(index)).FirstOrDefault();
 
             return result;
         }

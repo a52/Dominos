@@ -12,5 +12,7 @@ namespace a52.Domino.Domain.Model
         public int Index { get; set; }
 
         public Token item { get; set; }
+
+        public Movement Movement { get; set; }
     }
 }

@@ -22,8 +22,8 @@ Movement
 	- Direction: how the domino was posisioned. Up or Down
 
 Board
-	- Positions[]: is a matrix of position in the space (20x20) where the movement are placed
-		- Movements
+	- Positions[]: is a matrix of position in the space (20x8) where the movement are placed
+		- Movements, Items
 	- CurrentUpValue: the value of the upper direction that the tab has to have.
 	- CurrentLowValue: the value of the lower direction that the tab has to have.
 	- Movements[]: List of movements that had been made.

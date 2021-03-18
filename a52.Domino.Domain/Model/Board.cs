@@ -31,7 +31,6 @@ namespace a52.Domino.Domain.Model
         /// </summary>
         public int DownValue { get; private set; }
 
-
         /// <summary>
         /// - Movements[]: List of movements that had been made.
         /// </summary>
@@ -47,8 +46,6 @@ namespace a52.Domino.Domain.Model
         /// </summary>
         public Player LastPlayer { get; private set; }
 
-
-
         public Board()
         {
             Init();
@@ -56,10 +53,10 @@ namespace a52.Domino.Domain.Model
 
         void Init()
         {
-        
+
             this.UpValue = 0;
             this.DownValue = 0;
-        
+
             this.Movements = new List<Movement>();
             this.MoveCount = 0;
 
@@ -70,12 +67,39 @@ namespace a52.Domino.Domain.Model
         public void Move(Movement movement)
         {
             this.Movements.Add(movement);
-            this.MoveCount += 1;
             this.LastPlayer = movement.CurrentPlayer;
+
+            if (this.MoveCount.Equals(0))
+            {
+                this.UpValue = movement.CurrentToken.Up_Value;
+                this.DownValue = movement.CurrentToken.Down_Value;
+            }
+            else
+            {
+                switch (movement.CurrentDirection)
+                {
+                    case Direction.Up:
+                        if (movement.CurrentToken.Up_Value.Equals(this.UpValue))
+                            this.UpValue = movement.CurrentToken.Down_Value;
+                        else this.UpValue = movement.CurrentToken.Up_Value;
+                        break;
+
+                    case Direction.Down:
+                        if (movement.CurrentToken.Up_Value.Equals(this.DownValue))
+                            this.DownValue = movement.CurrentToken.Down_Value;
+                        else this.DownValue = movement.CurrentToken.Up_Value;
+
+                        break;
+                }
+            }
+
+            this.MoveCount += 1;
 
         }
 
     }
+
+
     public enum Direction
     {
         Auto = 0,

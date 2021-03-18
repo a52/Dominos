@@ -10,7 +10,7 @@ namespace a52.Domino.Domain.Model
 
         public Player()
         {
-            this.Tabs = new List<Token>();
+            this.Tokens = new List<Token>();
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace a52.Domino.Domain.Model
         /// <summary>
         /// - Tabs[]: list of tabs that is in the her hand  
         /// </summary>
-        public List<Token> Tabs { get; set; }
+        public List<Token> Tokens { get; set; }
 
         public override string ToString()
         {

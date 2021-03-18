@@ -99,7 +99,7 @@ namespace a52.Domino.DominoApp
 
             int currentTop = Console.CursorTop;
             int icount = 0;
-            foreach (var tab in player.Tabs)
+            foreach (var tab in player.Tokens)
             {
 
                 this.DisplayFicha(tab, icount * 7, currentTop);
