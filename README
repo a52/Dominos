@@ -1,1 +1,52 @@
 Juego de dominos para jugar en red.
+
+
+
+Token
+	- Up: Value up of the domino
+	- Down: Value down of the domino
+	- IsInBoard: Indication if the domino was moved
+
+Player
+	- PlayerName: Name of the player
+	- Index: Order of in the game
+	- IsMachine: Indicate if is a human or the computer that will play
+	- Tabs[]: list of tabs that is in the her hand
+	- Score: the point earned by the player
+
+Movement
+	- Index: Order in which the movement was made
+	- Date: Date and hour in which the movement was made
+	- Player: the player who made the movement
+	- Tab: the domino who was played
+	- Direction: how the domino was posisioned. Up or Down
+
+Board
+	- Positions[]: is a matrix of position in the space (20x8) where the movement are placed
+		- Movements, Items
+	- CurrentUpValue: the value of the upper direction that the tab has to have.
+	- CurrentLowValue: the value of the lower direction that the tab has to have.
+	- Movements[]: List of movements that had been made.
+	- MoveCount: Counter for the movements of the game
+	- LastPlayer: the last player that make the movement
+
+	+ Move(movement): make a movement. Put a domino in the board
+
+
+
+Game
+	- Board: the board where is playing
+	- Player[]: array of four player
+	
+	+ Deal(): iniciate a game
+	+ Play(player, tab, direction): make a movement in the board
+
+
+
+
+Console application
+	- F1 - Start Game: deal and clean board
+	- F2 - Choose Player: select player to make movement
+	- F3 - Show Board: show the state of the board. Movements, score, and current player
+	- F4 - Show player's tokens: show all the tokens of the user
+	- F5 - Make Movement: take a token of the current user and put it in the board

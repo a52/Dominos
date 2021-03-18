@@ -9,7 +9,7 @@ namespace a52.Domino.DominoApp
     {
         static void Main(string[] args)
         {
-            Jugar juego = new Jugar();
+            var  juego = new Juego2();
 
             juego.Execute();
 
