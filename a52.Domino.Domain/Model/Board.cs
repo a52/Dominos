@@ -45,7 +45,7 @@ namespace a52.Domino.Domain.Model
         /// - LastPlayer: the last player that make the movement
         /// </summary>
         public Player LastPlayer { get; private set; }
-
+        
         public Board()
         {
             Init();

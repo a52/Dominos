@@ -21,6 +21,18 @@ Movement
 	- Tab: the domino who was played
 	- Direction: how the domino was posisioned. Up or Down
 
+
+Position
+	is a coordinate in the board where can be placed tokens by movements. Will be managed by the board.
+	- X: X axis position
+	- Y: Y axis position
+	- Movement: Referent to the movement that is contained
+	- IsEmpty: boolean value that indicated if there are a movement contained
+	
+	+ GetPlayer: player of the movement. reference to the movement
+	+ GetGetToken: token of the movement. Reference to the movement
+
+
 Board
 	- Positions[]: is a matrix of position in the space (20x8) where the movement are placed
 		- Movements, Items
@@ -47,6 +59,7 @@ Game
 Console application
 	- F1 - Start Game: deal and clean board
 	- F2 - Choose Player: select player to make movement
-	- F3 - Show Board: show the state of the board. Movements, score, and current player
+	- F3 - Show Movement: show the state of the board. Movements, score, and current player
 	- F4 - Show player's tokens: show all the tokens of the user
-	- F5 - Make Movement: take a token of the current user and put it in the board
+	- F5 - Make Movement: take a token of the current user and put it in the board.
+	- F6 - Draw board: Show the board with all the positions 
