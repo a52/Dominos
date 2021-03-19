@@ -42,7 +42,7 @@ Game
             /// Generar Fichas
             tabs = new List<Model.Token>();
             for (int up = 0; up <= 6; up++) for (int down = 0; down <= 6; down++)
-                    if (up <= down) tabs.Add(new Model.Token() { Up_Value = up, Down_Value = down, IsOnBoard = false });
+                    if (up <= down) tabs.Add(new Model.Token() { Up = up, Down = down, IsOnBoard = false });
 
             /// Creacion de tablero
             Board = new Model.Board();
@@ -96,10 +96,10 @@ Game
             if (token.IsOnBoard)
                 throw new Exception("the token had been played");
             if (!Board.MoveCount.Equals(0))
-                if ((!token.Down_Value.Equals(Board.DownValue)) &&
-                    (!token.Up_Value.Equals(Board.DownValue)) &&
-                    (!token.Down_Value.Equals(Board.UpValue)) &&
-                    (!token.Up_Value.Equals(Board.UpValue)))
+                if ((!token.Down.Equals(Board.DownValue)) &&
+                    (!token.Up.Equals(Board.DownValue)) &&
+                    (!token.Down.Equals(Board.UpValue)) &&
+                    (!token.Up.Equals(Board.UpValue)))
                     throw new Exception($"the choosen token =>{token}<= do not match with the board values =>{Board.UpValue}:{Board.DownValue}<= ");
 
             /// validate player
@@ -114,7 +114,7 @@ Game
 
             if (direction == Model.Direction.Auto)
             {
-                if (token.Up_Value.Equals(Board.UpValue) || token.Down_Value.Equals(Board.UpValue))
+                if (token.Up.Equals(Board.UpValue) || token.Down.Equals(Board.UpValue))
                     direction = Model.Direction.Up;
                 else direction = Model.Direction.Down;
             }
@@ -145,10 +145,10 @@ Game
             var result = false;
 
             if (!token.IsOnBoard)
-                if ((token.Down_Value.Equals(Board.DownValue)) ||
-                    (token.Up_Value.Equals(Board.DownValue)) ||
-                    (token.Down_Value.Equals(Board.UpValue)) ||
-                    (token.Up_Value.Equals(Board.UpValue)))
+                if ((token.Down.Equals(Board.DownValue)) ||
+                    (token.Up.Equals(Board.DownValue)) ||
+                    (token.Down.Equals(Board.UpValue)) ||
+                    (token.Up.Equals(Board.UpValue)))
                     result = true;
             return result;
         }
@@ -165,8 +165,8 @@ Game
             if (this.Board.MoveCount.Equals(0))
             {
                 foreach (var item in player.Tokens)
-                    if (item.Up_Value.Equals(6))
-                        if (item.Down_Value.Equals(6))
+                    if (item.Up.Equals(6))
+                        if (item.Down.Equals(6))
                         {
                             result = true;
                             break;

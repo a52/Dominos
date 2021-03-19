@@ -123,11 +123,11 @@ namespace a52.Domino.DominoApp
             Console.SetCursorPosition(left, top);
             Console.Write("_____");
             Console.SetCursorPosition(left, top + 1);
-            Console.Write("| {0} |", tab.Up_Value);
+            Console.Write("| {0} |", tab.Up);
             Console.SetCursorPosition(left, top + 2);
             Console.Write("|---|");
             Console.SetCursorPosition(left, top + 3);
-            Console.Write("| {0} |", tab.Down_Value);
+            Console.Write("| {0} |", tab.Down);
             Console.SetCursorPosition(left, top + 4);
             Console.Write("|___|");
 
