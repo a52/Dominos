@@ -7,12 +7,14 @@ namespace a52.Domino.DominoApp
 {
 
     /*
-        Console application
-        - F1 - Start Game: deal and clean board
-        - F2 - Choose Player: select player to make movement
-        - F3 - Show Board: show the state of the board.Movements, score, and current player
-        - F4 - Show player's tokens: show all the tokens of the user
-        - F5 - Make Movement: take a token of the current user and put it in the board
+Console application
+	- F1 - Start Game: deal and clean board
+	- F2 - Choose Player: select player to make movement
+	- F3 - Show Movement: show the state of the board. Movements, score, and current player
+	- F4 - Show player's tokens: show all the tokens of the user
+	- F5 - Make Movement: take a token of the current user and put it in the board.
+	- F6 - Draw board: Show the board with all the positions 
+
     */
     class Juego2
     {
@@ -53,10 +55,9 @@ namespace a52.Domino.DominoApp
                             break;
 
 
-
-                        //- F3 - Show Board: show the state of the board.Movements, score, and current player
+                        //- F3 - Show Movement: show the state of the board. Movements, score, and current player
                         case ConsoleKey.F3:
-                            this.ShowBoard();
+                            this.ShowMovements();
 
                             break;
                         //- F4 - Show player's tokens: show all the tokens of the user
@@ -70,6 +71,11 @@ namespace a52.Domino.DominoApp
                             this.MakeMovement();
                             break;
 
+                        // - F6 - Draw board: Show the board with all the positions 
+                        case ConsoleKey.F6:
+                            this.DrawBoard();
+                            break;
+
                         default:
                             break;
                     }
@@ -79,8 +85,8 @@ namespace a52.Domino.DominoApp
                 catch (Exception ex)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("".PadRight(30,'*'));
-                    Console.WriteLine("Message: {0}",ex.Message);
+                    Console.WriteLine("".PadRight(30, '*'));
+                    Console.WriteLine("Message: {0}", ex.Message);
                     Console.WriteLine("".PadRight(30, '*'));
                     Console.ForegroundColor = ConsoleColor.White;
                 }
@@ -147,14 +153,14 @@ namespace a52.Domino.DominoApp
         /// <summary>
         /// //- F3 - Show Board: show the state of the board.Movements, score, and current player
         /// </summary>
-        private void ShowBoard()
+        private void ShowMovements()
         {
-            if (this._game.Board.MoveCount ==0)
+            if (this._game.Board.MoveCount == 0)
                 Console.WriteLine("There are not movement to show.");
             else
             {
                 Console.WriteLine("List of movements");
-                foreach(var item in this._game.Board.Movements)
+                foreach (var item in this._game.Board.Movements)
                 {
                     Console.WriteLine($"date: {item.Date} -> ({item.Index}) p: {item.CurrentPlayer} -> t:{item.CurrentToken} -> d:{item.CurrentDirection}");
                 }
@@ -172,12 +178,12 @@ namespace a52.Domino.DominoApp
 
             ShowCurrentPlayer();
 
-            foreach(var item in this._player.Tokens)
+            foreach (var item in this._player.Tokens)
             {
                 if (item.IsOnBoard)
                     Console.ForegroundColor = ConsoleColor.Yellow;
                 else Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine($"|{item.Up_Value}|{item.Down_Value}| -> On Board: {item.IsOnBoard}");
+                Console.WriteLine($"|{item.Up}|{item.Down}| -> On Board: {item.IsOnBoard}");
             }
             Console.ForegroundColor = ConsoleColor.White;
         }
@@ -195,7 +201,7 @@ namespace a52.Domino.DominoApp
                 ShowCurrentPlayer();
 
                 var haveTokenToPlay = false;
-                for(int i = 0;i < this._player.Tokens.Count;i++)
+                for (int i = 0; i < this._player.Tokens.Count; i++)
                 {
                     var item = this._player.Tokens[i];
 
@@ -208,7 +214,7 @@ namespace a52.Domino.DominoApp
                             haveTokenToPlay = true;
                     }
 
-                    Console.WriteLine($"\t({i}) -> |{item.Up_Value}|{item.Down_Value}| -> On Board: {item.IsOnBoard} ");
+                    Console.WriteLine($"\t({i}) -> |{item.Up}|{item.Down}| -> On Board: {item.IsOnBoard} ");
                 }
 
                 Console.ForegroundColor = ConsoleColor.White;
@@ -249,7 +255,7 @@ namespace a52.Domino.DominoApp
                             Console.WriteLine("A new player was set.");
                             done = true;
                         }
-                        
+
                         break;
 
 
@@ -280,9 +286,10 @@ namespace a52.Domino.DominoApp
             Console.WriteLine("".PadRight(30, '*'));
             Console.WriteLine(" -F1 - Start Game ");
             Console.WriteLine(" -F2 - Choose Player");
-            Console.WriteLine(" -F3 - Show Board");
+            Console.WriteLine(" -F3 - Show Movements");
             Console.WriteLine(" -F4 - Show player's tokens");
             Console.WriteLine(" -F5 - Make Movement");
+            Console.WriteLine(" -F6 - Draw Board");
             Console.WriteLine(" -ESC - SALIR ");
             Console.WriteLine("".PadRight(30, '*'));
 
@@ -312,6 +319,44 @@ namespace a52.Domino.DominoApp
 
 
             Console.WriteLine("");
+        }
+
+
+        private void DrawBoard()
+        {
+            var b = this._game.Board;
+
+            int line = 0;
+
+            Console.Write($"\tline: {line:00} -> ");
+            for (int c = 0; c < b.LenghtY; c++)
+                Console.Write($"    {c + 1}    -");
+            Console.WriteLine("");
+
+            for (int x = 0; x < b.LenghtX; x++)
+            {
+                line++;
+                Console.Write($"\tline: {line:00} -> ");
+
+                for (int y = 0; y < b.LenghtY; y++)
+                {
+                    var p = b.Positions[x, y];
+
+                    //Console.Write($" {x:000},{y:000} -");
+                    if (p is null)
+                        Console.Write($"    :    -");
+                    else
+                    {
+                        var t = p.GetToken();
+                        // Console.Write($"  {p.X:00}:{p.Y:00}  -");
+                        Console.Write($"  {t.Up:00}:{t.Down:00}  -");
+                    }
+                }
+
+                Console.WriteLine("");
+            }
+
+
         }
 
 
