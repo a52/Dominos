@@ -69,6 +69,7 @@ Console application
                         //- F5 - Make Movement: take a token of the current user and put it in the board
                         case ConsoleKey.F5:
                             this.MakeMovement();
+                            //this.MakeMovement2();
                             break;
 
                         // - F6 - Draw board: Show the board with all the positions 
@@ -221,7 +222,9 @@ Console application
 
                 if (!haveTokenToPlay)
                 {
+                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("You do not have token to be played. ");
+                    Console.ForegroundColor = ConsoleColor.White;
 
                 }
                 Console.WriteLine("\t(8) PASS");
@@ -242,8 +245,11 @@ Console application
                         var token = this._player.Tokens[int.Parse(opt)];
                         this._game.Play(this._player, token);
                         done = true;
+                        Console.ForegroundColor = ConsoleColor.Green;
 
-                        Console.WriteLine("Token was played");
+                        Console.WriteLine($"Token {token} was played");
+                        Console.ForegroundColor = ConsoleColor.White;
+
                         break;
 
                     case "8":
@@ -273,6 +279,13 @@ Console application
 
         }
 
+        private void MakeMovement2()
+        {
+            this.MakeMovement();
+            this._player = this._game.currentPlayer;
+            this.ShowMovements();
+            this.DrawBoard();
+        }
 
         #endregion
 
@@ -320,7 +333,6 @@ Console application
 
             Console.WriteLine("");
         }
-
 
         private void DrawBoard()
         {
