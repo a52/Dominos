@@ -68,8 +68,8 @@ Console application
 
                         //- F5 - Make Movement: take a token of the current user and put it in the board
                         case ConsoleKey.F5:
-                            this.MakeMovement();
-                            //this.MakeMovement2();
+                            //this.MakeMovement();
+                            this.MakeMovement2();
                             break;
 
                         // - F6 - Draw board: Show the board with all the positions 
@@ -329,6 +329,12 @@ Console application
                 Console.WriteLine($"Board Values -> up: {_game.Board.UpValue} - down: {_game.Board.DownValue} ");
             }
 
+            if (_game.Winner != null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"The Winner is {_game.Winner}. With a Score of {_game.Winner.Score}");
+                Console.ForegroundColor = ConsoleColor.White;
+            }
 
 
             Console.WriteLine("");

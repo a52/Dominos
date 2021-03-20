@@ -5,6 +5,8 @@ using System.Text;
 
 namespace a52.Domino.Domain.Service
 {
+
+    
     /*
      * 
 Game
@@ -17,7 +19,7 @@ Game
      * */
     public class Game
     {
-
+        #region Propiedades
         /// <summary>
         /// - Player[]: array of four player
         /// </summary>
@@ -25,14 +27,22 @@ Game
 
         public Model.Player currentPlayer { get; private set; }
 
-
         List<Model.Token> tabs;
+
+        private Model.Player firstPlayer;
+        public Model.Player Winner { get; private set; }
 
         /// <summary>
         /// - Board: the board where is playing
         /// </summary>  
         public Model.Board Board { get; set; }
 
+        public delegate void OnWinner(Model.Player player);
+
+        #endregion
+
+
+        #region Public Methdos and Functions
         /// <summary>
         /// Start the game
         /// The token are generated 
@@ -54,7 +64,6 @@ Game
                 this.Players.Add(new Model.Player() { PlayerName = string.Format("Jugador {0}", i + 1), IsActive = true, IsMachine = true, Index = i });
         }
 
-
         /// <summary>
         /// Distributes the token between the four players
         /// + Deal(): iniciate a game
@@ -63,10 +72,10 @@ Game
         {
             this.Board = new Model.Board();
 
-
             foreach (var tab in tabs) tab.IsAssigned = false;
             var q = from p in tabs where p.IsAssigned == false orderby Guid.NewGuid() select p;
             int iCount = 0;
+
             /// Asignar fichas al primer jugador
             foreach (var player in this.Players)
             {
@@ -78,9 +87,16 @@ Game
                 }
                 iCount++;
 
+                if (player.Tokens.Where(x => x.Up.Equals(6) && x.Down.Equals(6)).Count() > 0)
+                    this.firstPlayer = player;
+
             }
 
-            currentPlayer = Players.FirstOrDefault();
+            if (Winner != null)
+                this.firstPlayer = Winner;
+
+            // currentPlayer = Players.FirstOrDefault();
+            this.currentPlayer = this.firstPlayer;
 
         }
 
@@ -92,6 +108,7 @@ Game
         /// <param name="direction"></param>
         public void Play(Model.Player player, Model.Token token, Model.Direction direction = Model.Direction.Auto)
         {
+            
             /// validate token
             if (token.IsOnBoard)
                 throw new Exception("the token had been played");
@@ -130,6 +147,13 @@ Game
             Board.Move(m);
 
             token.IsOnBoard = true;
+
+            /// Identify if the player had played all the token. Tha made it the first 
+            if (player.Tokens.Where(x => x.IsOnBoard.Equals(false)).Count().Equals(0))
+            {
+                this.Winner = player;
+                this.Winner.Score += this.SumScore();
+            }
 
             /// Assign the next player
             this.currentPlayer = this.GetNextPlayer();
@@ -177,6 +201,10 @@ Game
             return result;
         }
 
+        #endregion
+
+        #region Private 
+
         /// <summary>
         ///  Identify the next player
         /// </summary>
@@ -194,7 +222,24 @@ Game
             return result;
         }
 
+        /// <summary>
+        /// Total de score
+        /// </summary>
+        /// <returns></returns>
+        private int SumScore()
+        {
+            var result = 0;
+
+            foreach(var p in this.Players)
+                foreach(var t in p.Tokens.Where(x=>!x.IsOnBoard))
+                    result += t.Up + t.Down;
+
+            return result;
+        }
 
 
+        #endregion
     }
+
+
 }
