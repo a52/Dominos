@@ -24,7 +24,9 @@ Console application
         public Juego2()
         {
             this._game = new Domain.Service.Game();
+            // _game.PlayerWon += game_onPlayerWon;
 
+            // _game.TokenPlayed += this.game_OnTokenPlayed;
         }
 
         public void Execute()
@@ -107,6 +109,7 @@ Console application
         {
             Console.WriteLine("Starting new game.");
             _game = new Domain.Service.Game();
+            _game.TokenPlayed += this.game_OnTokenPlayed;
             _game.Deal();
             _player = null;
             Console.WriteLine("Game was dealed. now you can start.");
@@ -377,6 +380,18 @@ Console application
 
         }
 
+
+        void game_onPlayerWon(EventArgs e)
+        {
+            Console.WriteLine("\n\t\tTENEMOS UN GANADOR\n");
+        }
+
+        void game_OnTokenPlayed(object source, EventArgs e)
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("...UNA FICHA FUE MOVIDA...");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
 
         #endregion
     }

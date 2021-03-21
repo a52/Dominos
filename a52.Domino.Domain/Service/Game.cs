@@ -19,15 +19,15 @@ Game
      * */
     public class Game
     {
-        #region Propiedades
+        #region Properties
         /// <summary>
         /// - Player[]: array of four player
         /// </summary>
-        public List<Model.Player> Players { get; set; }
+        public List<Model.Player> Players { get; private set; }
 
         public Model.Player currentPlayer { get; private set; }
 
-        List<Model.Token> tabs;
+        List<Model.Token> tokens;
 
         private Model.Player firstPlayer;
         public Model.Player Winner { get; private set; }
@@ -37,7 +37,33 @@ Game
         /// </summary>  
         public Model.Board Board { get; set; }
 
-        public delegate void OnWinner(Model.Player player);
+        #endregion
+
+
+        #region Events
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        public delegate void PlayerWonEventHandler(object source, EventArgs e);
+        public event PlayerWonEventHandler PlayerWon;
+        protected virtual void OnPlayerWon()
+        {
+            if (PlayerWon != null)
+                PlayerWon(this, EventArgs.Empty);
+        }
+
+        // Token Played
+        public delegate void TokenPlayedEventHandler(object source, EventArgs e);
+        public event TokenPlayedEventHandler TokenPlayed;
+        protected virtual void OnTokenPlayed()
+        {
+            if (TokenPlayed != null)
+                TokenPlayed(this, EventArgs.Empty);
+        }
+
 
         #endregion
 
@@ -50,9 +76,9 @@ Game
         public Game()
         {
             /// Generar Fichas
-            tabs = new List<Model.Token>();
+            tokens = new List<Model.Token>();
             for (int up = 0; up <= 6; up++) for (int down = 0; down <= 6; down++)
-                    if (up <= down) tabs.Add(new Model.Token() { Up = up, Down = down, IsOnBoard = false });
+                    if (up <= down) tokens.Add(new Model.Token() { Up = up, Down = down, IsOnBoard = false });
 
             /// Creacion de tablero
             Board = new Model.Board();
@@ -72,8 +98,8 @@ Game
         {
             this.Board = new Model.Board();
 
-            foreach (var tab in tabs) tab.IsAssigned = false;
-            var q = from p in tabs where p.IsAssigned == false orderby Guid.NewGuid() select p;
+            foreach (var tab in tokens) tab.IsAssigned = false;
+            var q = from p in tokens where p.IsAssigned == false orderby Guid.NewGuid() select p;
             int iCount = 0;
 
             /// Asignar fichas al primer jugador
@@ -93,8 +119,9 @@ Game
             }
 
             if (Winner != null)
+            {
                 this.firstPlayer = Winner;
-
+            }
             // currentPlayer = Players.FirstOrDefault();
             this.currentPlayer = this.firstPlayer;
 
@@ -147,6 +174,8 @@ Game
             Board.Move(m);
 
             token.IsOnBoard = true;
+
+            this.OnTokenPlayed();
 
             /// Identify if the player had played all the token. Tha made it the first 
             if (player.Tokens.Where(x => x.IsOnBoard.Equals(false)).Count().Equals(0))
