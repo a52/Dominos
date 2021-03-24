@@ -61,7 +61,7 @@ namespace a52.Domino.Domain.Model
         public int LenghtY { get { return this._Y_POSITION_SIZE; } }
 
         private Position[,] positions;
-        private int _START_X_POSITION = 14;
+        private int _START_X_POSITION = 13;
         private int _START_Y_POSITION = 4;
         private int _X_POSITION_SIZE = 28;
         private int _Y_POSITION_SIZE = 8;
@@ -132,6 +132,10 @@ namespace a52.Domino.Domain.Model
 
                         SetPosition(movement, Direction.Down);
 
+                        break;
+
+                    default:
+                        throw new Exception("Direction has to be specify.");
                         break;
                 }
             }

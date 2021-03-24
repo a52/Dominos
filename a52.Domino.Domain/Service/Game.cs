@@ -6,7 +6,7 @@ using System.Text;
 namespace a52.Domino.Domain.Service
 {
 
-    
+
     /*
      * 
 Game
@@ -15,6 +15,16 @@ Game
 	
 	+ Deal(): iniciate a game
 	+ Play(player, tab, direction): make a movement in the board
+
+
+
+	-> OnTokenPlayed (Player, Token) *
+        TokenPlayedEventArgs : EventArgs
+	-> OnChangePlayer(Player) * 
+	-> OnDeal() *
+	-> OnWinner(Player) *
+	-> OnBlockade(UpValue, DownValue) *
+    -> OnPlayerPass(Player)
 
      * */
     public class Game
@@ -43,25 +53,78 @@ Game
         #region Events
 
         /// <summary>
-        /// 
+        /// OnWinner: event trigger when one player win the game
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        public delegate void PlayerWonEventHandler(object source, EventArgs e);
+        public delegate void PlayerWonEventHandler(object source, PlayerEventArgs e);
         public event PlayerWonEventHandler PlayerWon;
-        protected virtual void OnPlayerWon()
+        protected virtual void OnPlayerWon(Model.Player player)
         {
             if (PlayerWon != null)
-                PlayerWon(this, EventArgs.Empty);
+            {
+                var e = new PlayerEventArgs(player);
+                PlayerWon(this, e);
+            }
         }
 
         // Token Played
-        public delegate void TokenPlayedEventHandler(object source, EventArgs e);
+        /// <summary>
+        /// OnTokenPlayed: event trigger when one token is played
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        public delegate void TokenPlayedEventHandler(object source, TokenPlayedEventArgs e);
         public event TokenPlayedEventHandler TokenPlayed;
-        protected virtual void OnTokenPlayed()
+        protected virtual void OnTokenPlayed(Model.Token token, Model.Player player, Model.Direction direction)
         {
             if (TokenPlayed != null)
-                TokenPlayed(this, EventArgs.Empty);
+            {
+                var e = new TokenPlayedEventArgs(token, player, direction);
+                TokenPlayed(this, e);
+            }
+        }
+
+
+        public delegate void DealEventHandler(object source, EventArgs e);
+        public event DealEventHandler DealGame;
+        protected virtual void OnDealGame()
+        {
+            if (DealGame != null)
+                DealGame(this, EventArgs.Empty);
+        }
+
+        public delegate void ChangePlayerEventHandler(object source, PlayerEventArgs e);
+        public event ChangePlayerEventHandler ChangePlayer;
+        protected virtual void OnChangePlayer(Model.Player player)
+        {
+            if (DealGame != null)
+            {
+                var e = new PlayerEventArgs(player);
+                ChangePlayer(this, e);
+            }
+        }
+
+        public delegate void BlockadeEventHandler(object source, EventArgs e);
+        public event BlockadeEventHandler BlockadeBoard;
+        protected virtual void OnBlockadeBoard(int up, int down)
+        {
+            if (DealGame != null)
+            {
+                var e = new BlockadeEventArgs(up, down);
+                BlockadeBoard(this, e);
+            }
+        }
+
+        public delegate void PlayerPassEventHandler(object source, PlayerEventArgs e);
+        public event PlayerWonEventHandler PlayerPass;
+        protected virtual void OnPlayerPass(Model.Player player)
+        {
+            if (PlayerWon != null)
+            {
+                var e = new PlayerEventArgs(player);
+                PlayerPass(this, e);
+            }
         }
 
 
@@ -125,6 +188,8 @@ Game
             // currentPlayer = Players.FirstOrDefault();
             this.currentPlayer = this.firstPlayer;
 
+            this.OnDealGame();
+
         }
 
         /// <summary>
@@ -135,7 +200,7 @@ Game
         /// <param name="direction"></param>
         public void Play(Model.Player player, Model.Token token, Model.Direction direction = Model.Direction.Auto)
         {
-            
+
             /// validate token
             if (token.IsOnBoard)
                 throw new Exception("the token had been played");
@@ -175,13 +240,29 @@ Game
 
             token.IsOnBoard = true;
 
-            this.OnTokenPlayed();
+            this.OnTokenPlayed(token, player, direction);
+            if (IsBlockade())
+            {
+                /// verify which player is is the winner
+                var nextPlayer = this.GetNextPlayer();
 
+                var scoreCurrentPlayer = this.PointByPlayer(player);
+                var scoreNextPlayer = this.PointByPlayer(nextPlayer);
+
+                if (scoreCurrentPlayer < scoreNextPlayer)
+                    this.Winner = player;
+                else this.Winner = nextPlayer;
+                this.Winner.Score += this.SumScore();
+                this.OnPlayerWon(this.Winner);
+
+            }
+            else
             /// Identify if the player had played all the token. Tha made it the first 
             if (player.Tokens.Where(x => x.IsOnBoard.Equals(false)).Count().Equals(0))
             {
                 this.Winner = player;
                 this.Winner.Score += this.SumScore();
+                this.OnPlayerWon(player);
             }
 
             /// Assign the next player
@@ -190,6 +271,7 @@ Game
 
         public void SetTheNextPlayer()
         {
+            this.OnPlayerPass(this.currentPlayer);
             this.currentPlayer = this.GetNextPlayer();
         }
 
@@ -259,16 +341,103 @@ Game
         {
             var result = 0;
 
-            foreach(var p in this.Players)
-                foreach(var t in p.Tokens.Where(x=>!x.IsOnBoard))
-                    result += t.Up + t.Down;
+            foreach (var p in this.Players)
+                result += this.PointByPlayer(p);
+            return result;
+
+        }
+
+        private int PointByPlayer(Model.Player player)
+        {
+            var result = 0;
+            foreach (var t in player.Tokens.Where(x => !x.IsOnBoard))
+                result += t.Up + t.Down;
 
             return result;
         }
 
 
+        private bool IsBlockade()
+        {
+            var result = false;
+            var up = this.Board.UpValue;
+            var down = this.Board.DownValue;
+
+            /// verify all up
+            var countUp = this.Board.Movements
+                            .Where(x => x.CurrentToken.Up.Equals(up)
+                                || x.CurrentToken.Down.Equals(up))
+                            .Count();
+            var countDown = this.Board.Movements
+                                        .Where(x => x.CurrentToken.Up.Equals(down)
+                                            || x.CurrentToken.Down.Equals(down))
+                                        .Count();
+
+            /// verify all down
+            if (up == 7 && down == 7)
+            {
+                this.OnBlockadeBoard(up, down);
+                result = true;
+            }
+
+            return result;
+        }
+
         #endregion
     }
 
+    /*
+    -> OnTokenPlayed (Player, Token)
+        TokenPlayedEventArgs : EventArgs
+	-> OnChangePlayer(Player)
+        PlayerEventArgs : EventArgs
+	-> OnDeal(Player)
+        DealEventArgs : EventArgs
+	-> OnWinner(Player)
+        PlayerEventArgs : EventArgs
+	-> OnBlockade(UpValue, DownValue)
+        BlockadeEventArgs : EventArgs   
+
+     */
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class TokenPlayedEventArgs : EventArgs
+    {
+        public Model.Token Token { get; private set; }
+        public Model.Player Player { get; private set; }
+        public Model.Direction Direction { get; private set; }
+
+        public TokenPlayedEventArgs(Model.Token token, Model.Player player, Model.Direction direction)
+        {
+            this.Token = token;
+            this.Player = player;
+            this.Direction = direction;
+        }
+    }
+
+    public class PlayerEventArgs : EventArgs
+    {
+        public Model.Player Player { get; private set; }
+
+        public PlayerEventArgs(Model.Player player)
+        {
+            this.Player = player;
+        }
+    }
+
+    public class BlockadeEventArgs : EventArgs
+    {
+        public int Up { get; private set; }
+        public int Down { get; private set; }
+
+        public BlockadeEventArgs(int up, int down)
+        {
+            this.Up = up;
+            this.Down = down;
+        }
+
+    }
 
 }

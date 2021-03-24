@@ -70,8 +70,8 @@ Console application
 
                         //- F5 - Make Movement: take a token of the current user and put it in the board
                         case ConsoleKey.F5:
-                            //this.MakeMovement();
-                            this.MakeMovement2();
+                            this.MakeMovement();
+                            //this.MakeMovement2();
                             break;
 
                         // - F6 - Draw board: Show the board with all the positions 
@@ -110,6 +110,8 @@ Console application
             Console.WriteLine("Starting new game.");
             _game = new Domain.Service.Game();
             _game.TokenPlayed += this.game_OnTokenPlayed;
+            _game.DealGame += this.game_OnDeal;
+            _game.PlayerWon += this.game_onPlayerWon;
             _game.Deal();
             _player = null;
             Console.WriteLine("Game was dealed. now you can start.");
@@ -381,15 +383,26 @@ Console application
         }
 
 
-        void game_onPlayerWon(EventArgs e)
+        void game_onPlayerWon(object source, EventArgs e)
         {
+
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("\n\t\tTENEMOS UN GANADOR\n");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
-        void game_OnTokenPlayed(object source, EventArgs e)
+        void game_OnTokenPlayed(object source, Domain.Service.TokenPlayedEventArgs e)
         {
             Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("...UNA FICHA FUE MOVIDA...");
+            // Console.WriteLine("...UNA FICHA FUE MOVIDA...");
+            Console.WriteLine($"...El jugador {e.Player} jugo la ficha {e.Token} en la direccion {e.Direction} ...");
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        void game_OnDeal(object source, EventArgs e)
+        {
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("...BARAJARON EL JUEGO...");
             Console.ForegroundColor = ConsoleColor.White;
         }
 

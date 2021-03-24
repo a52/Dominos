@@ -53,11 +53,16 @@ Game
 	+ Deal(): iniciate a game
 	+ Play(player, tab, direction): make a movement in the board
 
-	-> OnTokenPlayed (Player, Token)
+    -> OnTokenPlayed (Player, Token)
+        TokenPlayedEventArgs : EventArgs
 	-> OnChangePlayer(Player)
-	-> OnDeal()
+        PlayerEventArgs : EventArgs
+	-> OnDeal(Player)
+        DealEventArgs : EventArgs
 	-> OnWinner(Player)
+        PlayerEventArgs : EventArgs
 	-> OnBlockade(UpValue, DownValue)
+        BlockadeEventArgs : EventArgs   
 
 
 
